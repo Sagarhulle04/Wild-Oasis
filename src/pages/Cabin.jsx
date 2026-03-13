@@ -12,7 +12,7 @@ const Cabin = () => {
     queryFn: () => getCabinsById(cabinId),
   });
 
-  console.log(cabin);
+  // console.log(cabin);
   if (isLoading) return <Spinner />;
 
   return <div>Cabin</div>;

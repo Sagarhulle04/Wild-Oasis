@@ -49,7 +49,7 @@ const Button = styled.button`
   }
 `;
 
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 
 const Modal = ({ children, onClose }) => {
   const ref = useRef();

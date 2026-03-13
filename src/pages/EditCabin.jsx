@@ -14,7 +14,10 @@ const EditCabin = ({ cabinToEdit }) => {
     <>
       <Button
         style={{ fontSize: "12px" }}
-        onClick={() => setShowForm((show) => !show)}
+        onClick={(e) => {
+          e.stopPropagation();
+          setShowForm((show) => !show);
+        }}
       >
         Edit
       </Button>

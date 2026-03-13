@@ -112,7 +112,10 @@ function CabinRow({ cabin }) {
           <Button
             style={{ fontSize: "12px" }}
             disabled={isDeleting}
-            onClick={() => setShowForm(true)}
+            onClick={(e) => {
+              e.stopPropagation();
+              setShowForm(true);
+            }}
           >
             Delete
           </Button>
@@ -125,7 +128,8 @@ function CabinRow({ cabin }) {
               </p>
               <ButtonGroup>
                 <Button
-                  onClick={() => {
+                onClick={(e) => {
+                  e.stopPropagation();
                     setShowForm(false);
                   }}
                 >
@@ -134,7 +138,8 @@ function CabinRow({ cabin }) {
                 <Button
                   variations="danger"
                   disabled={isDeleting}
-                  onClick={() => {
+                onClick={(e) => {
+                  e.stopPropagation();
                     mutate(cabinId);
                     setShowForm(false);
                   }}
