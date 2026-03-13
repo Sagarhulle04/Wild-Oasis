@@ -24,7 +24,7 @@ function SignupForm() {
   const { mutate, isPending } = useMutation({
     mutationFn: signUp,
     onSuccess: () => {
-      toast.success("Signed in succeessfully");
+      toast.success("Signed in succeessfully. Verify the email ");
       reset;
       queryClient.invalidateQueries({ queryKey: ["user"] });
       navigate("/dashboard");

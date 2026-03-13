@@ -28,12 +28,25 @@ async function getCurrentuser() {
 }
 
 async function signUp({ fullName, email, password }) {
-  let { data, error } = await supabase.auth.signUp({
+  const { data, error } = await supabase.auth.signUp({
     email,
     password,
-    fullName,
+    options: {
+      data: { fullName, avatar: "" },
+    },
   });
 
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data;
+}
+
+async function updateUser({ password }) {
+  const { data, error } = await supabase.auth.updateUser({
+    password,
+  });
   if (error) {
     throw new Error(error.message);
   }
@@ -46,4 +59,4 @@ async function logout() {
   if (error) throw new Error(error.message);
 }
 
-export { login, signUp, getCurrentuser, logout };
+export { login, signUp, getCurrentuser, logout, updateUser };
