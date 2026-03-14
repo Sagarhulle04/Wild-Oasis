@@ -19,6 +19,7 @@ import CheckIn from "./pages/CheckIn";
 import SignupForm from "./features/authentication/SignUpForm";
 import SignUp from "./pages/SignUp";
 import ProtectedRoute from "./ui/ProtectedRoute";
+import { DarkModeProvider } from "./context/DarkModeProvider";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -30,7 +31,7 @@ const queryClient = new QueryClient({
 
 function App() {
   return (
-    <>
+    <DarkModeProvider>
       <QueryClientProvider client={queryClient}>
         <GlobalStyles />
         <BrowserRouter>
@@ -83,7 +84,7 @@ function App() {
         />
         <ReactQueryDevtools />
       </QueryClientProvider>
-    </>
+    </DarkModeProvider>
   );
 }
 
