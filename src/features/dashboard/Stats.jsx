@@ -3,51 +3,76 @@ import {
   HiOutlineCalendarDays,
   HiOutlineBanknotes,
   HiOutlineChartBar,
-} from 'react-icons/hi2';
-import { formatCurrency } from 'utils/helpers';
-import Stat from './Stat';
+} from "react-icons/hi2";
+import { formatCurrency } from "../../utils/helpers";
+import { useQuery } from "@tanstack/react-query";
+import { useRecentBookings } from "./useRecentBookings";
+import { useRecentStays } from "./useRecentStays";
+import Stat from "./Stat";
+import Spinner from "../../ui/Spinner";
+import { getCabins } from "../../utils/apiCabins";
 
-function Stats({ bookings, confirmedStays, numDays, cabinCount }) {
-  // Stat 1)
+function Stats() {
+  const { isLoading: isBookingsLoading, bookings = [] } = useRecentBookings();
+  const {
+    isLoading: isStaysLoading,
+    confirmedStays = [],
+    numDays,
+  } = useRecentStays();
+
+  const { isLoading: isCabinsLoading, data: cabins = [] } = useQuery({
+    queryKey: ["cabins"],
+    queryFn: getCabins,
+  });
+
+  if (isBookingsLoading || isStaysLoading || isCabinsLoading) {
+    return <Spinner />;
+  }
+
+  const cabinCount = cabins?.length ?? 0;
+
   const numBookings = bookings.length;
-
-  // Stat 2)
-  const sales = bookings.reduce((acc, cur) => acc + cur.totalPrice, 0);
-
-  // Stat 3)
+  const sales = bookings.reduce(
+    (acc, cur) => acc + Number(cur.totalPrice ?? 0),
+    0,
+  );
   const checkins = confirmedStays.length;
 
-  // Stat 4)
-  // We will use a trick to calculate occupancy rate. It's not 100% accurate, but we want to keep it simple. We know we can have a total of 'numDays * cabinCount' days to occupy, and we also know how many days were actually booked. From this, we can compute the percentage
+  // Occupancy rate: booked nights / (available days * cabin count)
+  const occupationDenominator = (numDays ?? 0) * cabinCount;
   const occupation =
-    confirmedStays.reduce((acc, cur) => acc + cur.numNights, 0) /
-    (numDays * cabinCount);
+    occupationDenominator > 0
+      ? confirmedStays.reduce(
+          (acc, cur) => acc + Number(cur.numNights ?? 0),
+          0,
+        ) / occupationDenominator
+      : 0;
 
   return (
     <>
       <Stat
         icon={<HiOutlineBriefcase />}
-        title='Bookings'
+        title="Bookings"
         value={numBookings}
-        color='blue'
+        color="blue"
       />
       <Stat
         icon={<HiOutlineBanknotes />}
-        title='Sales'
+        title="Sales"
         value={formatCurrency(sales)}
-        color='green'
+        color="green"
       />
       <Stat
         icon={<HiOutlineCalendarDays />}
-        title='Check ins'
+        title="Check ins"
         value={checkins}
-        color='indigo'
+        color="indigo"
       />
       <Stat
         icon={<HiOutlineChartBar />}
-        title='Occupancy rate'
-        value={Math.round(occupation * 100) + '%'}
-        color='yellow'
+        title="Occupancy rate"
+        value={Math.round(occupation * 100) + "%"}
+        color="yellow"
       />
     </>
   );

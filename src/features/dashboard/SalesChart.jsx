@@ -1,4 +1,4 @@
-import { useDarkMode } from 'context/DarkModeContext';
+import { useDarkMode } from "../../context/DarkModeProvider";
 import { eachDayOfInterval, format, isSameDay, subDays } from 'date-fns';
 import {
   Area,

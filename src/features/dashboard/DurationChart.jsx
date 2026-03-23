@@ -1,4 +1,4 @@
-import { useDarkMode } from 'context/DarkModeContext';
+import { useDarkMode } from "../../context/DarkModeProvider";
 import {
   Cell,
   Legend,
