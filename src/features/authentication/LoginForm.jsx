@@ -15,6 +15,17 @@ function LoginForm() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
+  const { mutate: loginMutate, isPending: isLoginLoading } = useMutation({
+    mutationFn: login,
+    onSuccess: async () => {
+      // Ensure ProtectedRoute doesn't read a cached "logged out" user for 60s
+      await queryClient.invalidateQueries({ queryKey: ["user"] });
+      toast.success("Logged in successfully");
+      navigate("/", { replace: true });
+    },
+    onError: (err) => toast.error(err.message),
+  });
+
   function handleSubmit(e) {
     e.preventDefault();
 
@@ -33,17 +44,6 @@ function LoginForm() {
       },
     );
   }
-
-  const { mutate: loginMutate, isPending: isLoginLoading } = useMutation({
-    mutationFn: login,
-    onSuccess: async () => {
-      // Ensure ProtectedRoute doesn't read a cached "logged out" user for 60s
-      await queryClient.invalidateQueries({ queryKey: ["user"] });
-      toast.success("Logged in successfully");
-      navigate("/", { replace: true });
-    },
-    onError: (err) => toast.error(err.message),
-  });
 
   if (isLoginLoading) return <Spinner />;
 

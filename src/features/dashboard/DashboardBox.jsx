@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { box } from "styles/styles";
+import { box } from "../../styles/styles";
 
 const DashboardBox = styled.div`
   ${box}
