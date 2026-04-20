@@ -1,4 +1,4 @@
-const imageUrl = `https://xnfakwrcnflojafwhtdx.supabase.co/storage/v1/object/public/cabin-images/`;
+const imageUrl = `https://yoxzrsyajbyxyyfdupcy.supabase.co/storage/v1/object/public/cabin-images/`;
 
 // Book now and experience luxury in nature.
 // Book now and elevate your group or family getaway to new heights of luxury.

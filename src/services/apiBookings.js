@@ -4,7 +4,7 @@ import supabase from "../utils/supabase";
 export async function getBooking(id) {
   const { data, error } = await supabase
     .from("bookings")
-    .select("*, cabins(*), guests(*)")
+    .select("*, cabins!bookings_cabinId_fkey(*), guests!bookings_guestId_fkey(*)")
     .eq("id", id)
     .single();
 
@@ -37,7 +37,7 @@ export async function getStaysAfterDate(date) {
   const { data, error } = await supabase
     .from("bookings")
     // .select('*')
-    .select("*, guests(fullName)")
+    .select("*, guests!bookings_guestId_fkey(fullName)")
     .gte("startDate", date)
     .lte("startDate", getToday());
 
@@ -53,7 +53,7 @@ export async function getStaysAfterDate(date) {
 export async function getStaysTodayActivity() {
   const { data, error } = await supabase
     .from("bookings")
-    .select("*, guests(fullName, nationality, countryFlag)")
+    .select("*, guests!bookings_guestId_fkey(fullName, nationality, countryFlag)")
     .or(
       `and(status.eq.unconfirmed,startDate.eq.${getToday()}),and(status.eq.checked-in,endDate.eq.${getToday()})`,
     )
